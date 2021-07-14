@@ -8,7 +8,6 @@ import { MyContext } from "../context";
 
 const Juego = () => {
   const context = useContext(MyContext);
-  console.log(context.state);
   if (context.state.Juego == 43) {
     return <Color4 />;
   } else if (context.state.Juego == 53) {

@@ -1,94 +1,143 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   Alert,
-  Button,
+  Dimensions,
 } from "react-native";
-import Toast from "react-native-toast-message";
+import { Button } from "react-native-elements";
 import { Audio } from "expo-av";
+import Toast from "react-native-toast-message";
+
+const { width, height } = Dimensions.get("screen");
+
 const tracks = [
   {
     id: 1,
-    url: require("../assets/audio/Escoge-el-color-amarillo1623977940.mp3"),
-    title: "Amarillo",
-    name: "yellow",
+    url: require("../assets/audio/naranja.mp3"),
+    title: "Naranja",
+    name: "orange",
   },
   {
     id: 2,
-    url: require("../assets/audio/Escoge-el-color-azul1623977968.mp3"),
-    title: "Azul",
-    name: "blue",
+    url: require("../assets/audio/morado.mp3"),
+    title: "Morado",
+    name: "purple",
   },
 
   {
     id: 3,
-    url: require("../assets/audio/Escoge-el-color-rojo1623977901.mp3"),
-    title: "Rojo",
-    name: "red",
+    url: require("../assets/audio/verde.mp3"),
+    title: "Verde",
+    name: "green",
   },
 ];
 
-const Color5 = () => {
-  const [sound, setSound] = useState("");
-  const [index, setIndex] = useState(0);
-  const [score, setScore] = useState(0);
-  const [x, setX] = useState("blue");
-  const [y, setY] = useState("yellow");
-  const [currentColor, setCurrentColor] = useState("blue");
-  const [timerIsOn, setTimerOn] = useState(true);
-  const [difficulty, setDificulty] = useState(1000);
-  const [currentColorEsp, setCurrentColorEsp] = useState("Azul");
+const Color6 = () => {
+  const [colorX, setColorX] = useState();
+  const [colorY, setColorY] = useState();
+  const [colorR, setColorR] = useState("#ffffff");
+  const [currentColor, setCurrentColor] = useState("purple");
+
   const [disabledBtn, setDisabledBtn] = useState(true);
+  const [sound, setSound] = useState("");
+  const [colorEsp, setColorEsp] = useState("Morado");
+  const [url, setUrl] = useState(tracks[1].url);
+  const [counter, setCounter] = useState(0);
 
-  const userClick = (color) => {
-    if (color == currentColor) {
-      setScore(score + 1);
+  function userClick(color) {
+    console.log(`color actual ${currentColor}`);
+    console.log(`color resultante ${colorR}`);
+    if (counter > 0) {
+      if (color === currentColor) {
+        Toast.show({
+          type: "success",
+          text1: "escogiste los colores correctos",
+        });
 
-      generateColors();
+        let num = Math.floor(Math.random() * 3);
+        let colorAux = tracks[num].title;
+        let color1 = tracks[num].name;
+        let urlAux = tracks[num].url;
+        setUrl(urlAux);
+        setCurrentColor(color1);
+        setColorEsp(colorAux);
+      } else {
+        Toast.show({
+          type: "error",
+          text1: "escogiste el color incorrecto, intenta otra vez",
+        });
+      }
+    }
+  }
 
-      //this.startTimer();
+  function setColors(color) {
+    setCounter((prevCount) => prevCount + 1);
+    if (counter === 0) {
+      let colorAux = color;
+      setColorX(colorAux);
     } else {
-      Alert.alert(`escogiste el color incorrecto tienes ${score} puntos.`);
-      resetGame();
+      let colorAux = color;
+
+      setDisabledBtn(true);
+      setColorY(colorAux);
+
+      let color1 = resultante(colorAux);
+      console.log(`color1: ${color1}`);
+      userClick(color1);
     }
-  };
+  }
 
-  const generateColors = () => {
-    let colors = ["green", "purple", "gray"];
+  function instructions() {
+    setDisabledBtn(false);
+    console.log(currentColor);
+    setCounter(0);
+    setColorR("#fff");
+  }
 
-    let num = Math.floor(Math.random() * 2);
-    if (num === 0) {
-      setX(currentColor);
-      setY(colors[Math.floor(Math.random() * colors.length)]);
-    } else if (num === 1) {
-      setY(currentColor);
-      setX(colors[Math.floor(Math.random() * colors.length)]);
+  const resultante = (color) => {
+    let color1;
+    if (colorX === "blue") {
+      if (color === "yellow") {
+        setColorR("green");
+        color1 = "green";
+        return color1;
+      } else if (color === "red") {
+        setColorR("purple");
+        let color1 = "purple";
+        return color1;
+      }
+    } else if (colorX === "red") {
+      if (color === "yellow") {
+        setColorR("orange");
+        color1 = "orange";
+        return color1;
+      } else if (color === "blue") {
+        setColorR("purple");
+        color1 = "purple";
+        return color1;
+      }
+    } else if (colorX === "yellow") {
+      if (color === "blue") {
+        setColorR("green");
+        color1 = "green";
+        return color1;
+      } else if (color === "red") {
+        setColorR("orange");
+        color1 = "orange";
+        return color1;
+      }
     }
-  };
-
-  const startTimer = () => {
-    let lvl = score + 1;
-    let timer = setTimeout(() => {
-      endTimer(timer, lvl);
-    }, difficulty);
-  };
-
-  const resetGame = () => {
-    setScore(0);
+    console.log(`color 1 ${color1}`);
   };
 
   async function playSound() {
-    setIndex(Math.floor(Math.random() * tracks.length));
-    console(`index:${index}`);
+    instructions();
     console.log("Loading Sound");
-    const { sound } = await Audio.Sound.createAsync(tracks[index].url);
+    const { sound } = await Audio.Sound.createAsync(url);
     setSound(sound);
-    setCurrentColorEsp(tracks[index].title);
-    setCurrentColor(tracks[index].name);
-
     console.log("Playing Sound");
     await sound.playAsync();
   }
@@ -98,62 +147,140 @@ const Color5 = () => {
       ? () => {
           console.log("Unloading Sound");
           sound.unloadAsync();
-          setIndex(Math.floor(Math.random() * tracks.length));
-          console.log(index);
         }
       : undefined;
   }, [sound]);
 
   return (
     <View style={styles.container}>
-      <View style={styles.bar} />
-
       <Text style={styles.instructions}>
-        Escoge el color correcto para ganar un punto
+        Selecciona los colores para formar el color:
       </Text>
-
-      <Text style={styles.color}>{currentColorEsp.toUpperCase()}</Text>
+      <Text style={styles.instructions}>{colorEsp}</Text>
 
       <View style={styles.colors}>
         <TouchableOpacity
           disabled={disabledBtn}
-          onPress={() => userClick(x)}
-          style={[styles.x, { backgroundColor: x }]}
+          onPress={() => {
+            setColors("blue");
+            //userClick();
+          }}
+          style={[styles.x, { backgroundColor: "blue" }]}
         />
         <TouchableOpacity
           disabled={disabledBtn}
-          onPress={() => userClick(y)}
-          style={[styles.y, { backgroundColor: y }]}
+          onPress={() => {
+            setColors("yellow");
+            //userClick();
+          }}
+          style={[styles.y, { backgroundColor: "yellow" }]}
+        />
+        <TouchableOpacity
+          disabled={disabledBtn}
+          onPress={() => {
+            setColors("red");
+            //userClick();
+          }}
+          style={[styles.z, { backgroundColor: "red" }]}
         />
       </View>
-      <Text style={styles.color}>{`Puntos: ${score}`}</Text>
-      <Button title="Play Sound" onPress={playSound} disabled={!disabledBtn} />
+      <View style={styles.colors}>
+        <TouchableOpacity
+          style={[styles.r, { backgroundColor: colorR }]}
+          disabled={disabledBtn}
+        />
+      </View>
+      <View style={{ margin: 25 }}>
+        <Button
+          title="instrucciones"
+          disabled={!disabledBtn}
+          onPress={
+            playSound
+            //instructions
+          }
+        />
+      </View>
     </View>
   );
 };
-export default Color5;
+export default Color6;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    alignContent: "space-around",
   },
   x: {
     height: "100%",
-    width: "45%",
+    width: "30%",
+    margin: 5,
+    borderRadius: 6,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.44,
+    shadowRadius: 10.32,
+    elevation: 16,
   },
   y: {
     height: "100%",
-    width: "45%",
+    width: "30%",
+    margin: 5,
+    borderRadius: 6,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.44,
+    shadowRadius: 10.32,
+    elevation: 16,
+  },
+  z: {
+    height: "100%",
+    width: "30%",
+    margin: 5,
+    paddingBottom: 15,
+    borderRadius: 6,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.44,
+    shadowRadius: 10.32,
+    elevation: 16,
+  },
+
+  r: {
+    height: "100%",
+    width: "30%",
+    margin: 15,
+    paddingBottom: 20,
+    borderRadius: 6,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.44,
+    shadowRadius: 10.32,
+    elevation: 16,
   },
   color: {
-    margin: 20,
+    //flex: 1,
+    margin: 30,
     fontSize: 30,
     fontWeight: "900",
   },
   colors: {
-    height: 300,
+    //flex: 1,
+    height: 200,
     flexDirection: "row",
   },
   bar: {

@@ -14,7 +14,7 @@ import { MyContext } from "../context";
 import { DATA } from "./data";
 const { width, height } = Dimensions.get("screen");
 
-const bgs = ["#A5BBFF", "#DDBEFE", "#FF63ED", "#B98EFF"];
+const bgs = ["#4fadcc", "#DDBEFE", "#FF63ED", "#B98EFF"];
 
 const Indicator = ({ scrollX }) => {
   return (
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 5 },
     shadowRadius: 10,
     shadowOpacity: 0.35,
-    width: 80,
+    width: 100,
     height: 30,
     alignItems: "center",
   },

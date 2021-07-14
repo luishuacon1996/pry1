@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, { useContext } from "react";
 import {
   StatusBar,
   Animated,
@@ -7,57 +7,21 @@ import {
   View,
   StyleSheet,
   Dimensions,
-} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+} from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-import {MyContext} from '../context'
-import {DatosCategoria} from './data'
+import { MyContext } from "../context";
+import { DatosCategoria } from "./data";
+import { ExpandingDot } from "react-native-animated-pagination-dots";
 
-const {width, height} = Dimensions.get('screen')
+const { width, height } = Dimensions.get("screen");
 
-const bgs = ['#A5BBFF', '#DDBEFE', '#FF63ED', '#B98EFF']
+const bgs = ["#006cd1", "#fa8334", "#5dd9c1", "#b084cc", "#d7263d"];
 
-const Indicator = ({scrollX}) => {
-  return (
-    <View style={{position: 'absolute', flexDirection: 'row', bottom: 100}}>
-      {DatosCategoria.map((_, i) => {
-        const inputRange = [(i - 1) * width, i * width, (i + 1) * width]
-        const scale = scrollX.interpolate({
-          inputRange,
-          outputRange: [0.8, 1.4, 0.8],
-          extrapolate: 'clamp',
-        });
-        const opacity = scrollX.interpolate({
-          inputRange,
-          outputRange: [0.4, 1, 0.4],
-          extrapolate: 'clamp',
-        });
-        return (
-          <Animated.View
-            key={`inicator-${i}`}
-            style={{
-              height: 10,
-              width: 10,
-              backgroundColor: '#fff',
-              opacity,
-              borderRadius: 5,
-              margin: 10,
-              transform: [
-                {
-                  scale,
-                },
-              ],
-            }}
-          />
-        );
-      })}
-    </View>
-  );
-};
-const BackDrop = ({scrollX}) => {
+const BackDrop = ({ scrollX }) => {
   const backgroundColor = scrollX.interpolate({
     inputRange: bgs.map((_, i) => i * width),
-    outputRange: bgs.map(bg => bg),
+    outputRange: bgs.map((bg) => bg),
   });
   return (
     <Animated.View
@@ -70,15 +34,15 @@ const BackDrop = ({scrollX}) => {
     />
   );
 };
-const Square = ({scrollX}) => {
+const Square = ({ scrollX }) => {
   const YOLO = Animated.modulo(
     Animated.divide(Animated.modulo(scrollX, width), new Animated.Value(width)),
-    1,
+    1
   );
 
   const rotate = YOLO.interpolate({
     inputRange: [0, 0.5, 1],
-    outputRange: ['20deg', '0deg', '20deg'],
+    outputRange: ["20deg", "0deg", "20deg"],
   });
   const translateX = YOLO.interpolate({
     inputRange: [0, 0.5, 1],
@@ -89,9 +53,9 @@ const Square = ({scrollX}) => {
       style={{
         width: height,
         height: height,
-        backgroundColor: '#fff',
+        backgroundColor: "#fff",
         borderRadius: 86,
-        position: 'absolute',
+        position: "absolute",
         top: -height * 0.6,
         left: -height * 0.3,
         transform: [
@@ -102,11 +66,12 @@ const Square = ({scrollX}) => {
             translateX,
           },
         ],
-      }}></Animated.View>
+      }}
+    ></Animated.View>
   );
 };
 
-const Categoria = props => {
+const Categoria = (props) => {
   const context = useContext(MyContext);
 
   const scrollX = React.useRef(new Animated.Value(0)).current;
@@ -119,49 +84,52 @@ const Categoria = props => {
       <Animated.FlatList
         data={DatosCategoria}
         horizontal
-        contentContainerStyle={{paddingBottom: 100}}
+        contentContainerStyle={{ paddingBottom: 100 }}
         showsHorizontalScrollIndicator={false}
         scrollEventThrottle={32}
         pagingEnabled
         onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {x: scrollX}}}],
-          {useNativeDriver: false},
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          { useNativeDriver: false }
         )}
-        keyExtractor={item => item.key}
-        renderItem={({item}) => {
+        keyExtractor={(item) => item.key}
+        renderItem={({ item }) => {
           return (
-            <View style={{width, alignItems: 'center', padding: 20}}>
+            <View style={{ width, alignItems: "center", padding: 20 }}>
               <View
                 style={{
                   flex: 0.7,
-                  justifyContent: 'center',
-                }}>
+                  justifyContent: "center",
+                }}
+              >
                 <Image
                   source={item.image}
                   style={{
                     width: width / 2,
                     height: width / 2,
-                    resizeMode: 'contain',
+                    resizeMode: "contain",
                   }}
                 />
               </View>
-              <View style={{flex: 0.3}}>
+              <View style={{ flex: 0.3 }}>
                 <Text
                   style={{
                     fontSize: 24,
-                    fontWeight: '800',
+                    fontWeight: "800",
                     marginBottom: 10,
-                    color: 'white',
-                  }}>
+                    color: "white",
+                  }}
+                >
                   {item.title}
                 </Text>
-                <View style={{flex: 1, alignItems: 'center'}}>
+                <View style={{ flex: 1, alignItems: "center" }}>
                   <TouchableOpacity
                     style={styles.button}
                     onPress={() => {
-                      props.navigation.navigate('EscogeJuego', {itemId: 4});
+                      props.navigation.navigate("EscogeJuego", { itemId: 4 });
                       context.setCategoria(item.key);
-                    }}>
+                    }}
+                  >
                     <Text>Escoge el juego</Text>
                   </TouchableOpacity>
                 </View>
@@ -170,7 +138,22 @@ const Categoria = props => {
           );
         }}
       />
-      <Indicator scrollX={scrollX} />
+      <ExpandingDot
+        data={DatosCategoria}
+        expandingDotWidth={30}
+        scrollX={scrollX}
+        inActiveDotOpacity={0.6}
+        dotStyle={{
+          width: 10,
+          height: 10,
+          backgroundColor: "#347af0",
+          borderRadius: 5,
+          marginHorizontal: 5,
+        }}
+        containerStyle={{
+          bottom: 30,
+        }}
+      />
     </View>
   );
 };
@@ -180,17 +163,17 @@ export default Categoria;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   button: {
-    backgroundColor: '#859a9b',
+    backgroundColor: "#859a9b",
     borderRadius: 20,
     padding: 10,
     marginBottom: 20,
-    shadowColor: '#303838',
-    shadowOffset: {width: 0, height: 5},
+    shadowColor: "#303838",
+    shadowOffset: { width: 0, height: 5 },
     shadowRadius: 10,
     shadowOpacity: 0.35,
   },
