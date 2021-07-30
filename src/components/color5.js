@@ -7,9 +7,10 @@ import {
   Alert,
   Dimensions,
 } from "react-native";
-import { Button } from "react-native-elements";
+import { Button, Icon } from "react-native-elements";
 import { Audio } from "expo-av";
 import Toast from "react-native-toast-message";
+import { human, systemWeights, materialColors } from "react-native-typography";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -35,7 +36,7 @@ const tracks = [
   },
 ];
 
-const Color6 = () => {
+const Color5 = () => {
   const [colorX, setColorX] = useState();
   const [colorY, setColorY] = useState();
   const [colorR, setColorR] = useState("#ffffff");
@@ -48,13 +49,12 @@ const Color6 = () => {
   const [counter, setCounter] = useState(0);
 
   function userClick(color) {
-    console.log(`color actual ${currentColor}`);
-    console.log(`color resultante ${colorR}`);
     if (counter > 0) {
       if (color === currentColor) {
         Toast.show({
           type: "success",
-          text1: "escogiste los colores correctos",
+          text1: "😀😀😀😀😀😀",
+          position: "bottom",
         });
 
         let num = Math.floor(Math.random() * 3);
@@ -67,7 +67,9 @@ const Color6 = () => {
       } else {
         Toast.show({
           type: "error",
-          text1: "escogiste el color incorrecto, intenta otra vez",
+          text1: "😟😟😟😟😟😟",
+          //text1: "escogiste el color incorrecto, intenta otra vez",
+          position: "bottom",
         });
       }
     }
@@ -190,20 +192,25 @@ const Color6 = () => {
           disabled={disabledBtn}
         />
       </View>
-      <View style={{ margin: 25 }}>
-        <Button
-          title="instrucciones"
+      <View style={{ margin: 30 }}>
+        <TouchableOpacity
           disabled={!disabledBtn}
-          onPress={
-            playSound
-            //instructions
+          onPress={playSound}
+          style={
+            disabledBtn
+              ? { ...styles.button }
+              : { ...styles.button, ...styles.buttonDisabled }
           }
-        />
+        >
+          <View style={{ justifyContent: "flex-end", paddingTop: 5 }}>
+            <Icon name="arrow-right" size={70} />
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
 };
-export default Color6;
+export default Color5;
 
 const styles = StyleSheet.create({
   container: {
@@ -212,6 +219,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     alignContent: "space-around",
+    backgroundColor: "#89E6CE",
   },
   x: {
     height: "100%",
@@ -226,6 +234,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.44,
     shadowRadius: 10.32,
     elevation: 16,
+    borderWidth: 3,
+    borderColor: "black",
   },
   y: {
     height: "100%",
@@ -240,6 +250,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.44,
     shadowRadius: 10.32,
     elevation: 16,
+    borderWidth: 3,
+    borderColor: "black",
   },
   z: {
     height: "100%",
@@ -255,6 +267,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.44,
     shadowRadius: 10.32,
     elevation: 16,
+    borderWidth: 3,
+    borderColor: "black",
   },
 
   r: {
@@ -288,8 +302,25 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
   },
   instructions: {
-    fontSize: 20,
+    ...human.title1,
+    ...systemWeights.semibold,
     textAlign: "center",
     padding: 15,
+  },
+  button: {
+    shadowColor: "#000",
+    shadowRadius: 10.32,
+    elevation: 16,
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    backgroundColor: "#1094EF",
+    width: 120,
+    height: 40,
+    borderRadius: 5,
+  },
+  buttonDisabled: {
+    backgroundColor: "#ccc",
   },
 });

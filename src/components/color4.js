@@ -7,9 +7,11 @@ import {
   Alert,
   Dimensions,
 } from "react-native";
-import { Button } from "react-native-elements";
+import { Icon } from "react-native-elements";
 import { Audio } from "expo-av";
 import Toast from "react-native-toast-message";
+
+import { human, systemWeights, materialColors } from "react-native-typography";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -49,7 +51,8 @@ const Color4 = () => {
     if (color === currentColor) {
       Toast.show({
         type: "success",
-        text1: "escogiste el color correcto",
+        text1: "🙂🙂🙂🙂🙂🙂",
+        position: "bottom",
       });
       let num = Math.floor(Math.random() * 2);
       console.log(`current color antes ${currentColor}`);
@@ -81,7 +84,8 @@ const Color4 = () => {
     } else {
       Toast.show({
         type: "error",
-        text1: "escogiste el color incorrecto, intenta otra vez",
+        text1: "😥😥😥😥😥😥",
+        position: "bottom",
       });
     }
   }
@@ -110,8 +114,8 @@ const Color4 = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.instructions}>Escoge el color:</Text>
-      <Text style={styles.instructions}>{colorEsp}</Text>
+      <Text style={styles.text}>Escoge el color:</Text>
+      <Text style={styles.text1}>{colorEsp}</Text>
 
       <View style={styles.colors}>
         <TouchableOpacity
@@ -125,12 +129,20 @@ const Color4 = () => {
           style={[styles.y, { backgroundColor: colorY }]}
         />
       </View>
-      <View style={{ margin: 10 }}>
-        <Button
-          title="instrucciones"
+      <View style={{ margin: 30 }}>
+        <TouchableOpacity
           disabled={!disabledBtn}
           onPress={playSound}
-        />
+          style={
+            disabledBtn
+              ? { ...styles.button }
+              : { ...styles.button, ...styles.buttonDisabled }
+          }
+        >
+          <View style={{ justifyContent: "flex-end", paddingTop: 5 }}>
+            <Icon name="arrow-right" size={70} />
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -143,6 +155,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     alignContent: "space-between",
+    backgroundColor: "#89E6CE",
   },
   x: {
     //flex: 1,
@@ -158,6 +171,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.44,
     shadowRadius: 10.32,
     elevation: 16,
+    borderWidth: 3,
+    borderColor: "black",
   },
   y: {
     //flex: 1,
@@ -173,6 +188,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.44,
     shadowRadius: 10.32,
     elevation: 16,
+    borderWidth: 3,
+    borderColor: "black",
   },
   colors: {
     //flex: 1,
@@ -183,6 +200,36 @@ const styles = StyleSheet.create({
   instructions: {
     //flex: 1,
     fontSize: 20,
+    textAlign: "center",
+    padding: 15,
+  },
+  button: {
+    shadowColor: "#000",
+    shadowRadius: 10.32,
+    elevation: 16,
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    backgroundColor: "#1094EF",
+    width: 120,
+    height: 40,
+    borderRadius: 5,
+  },
+  buttonDisabled: {
+    backgroundColor: "#ccc",
+  },
+  text: {
+    ...human.largeTitle,
+    ...systemWeights.semibold,
+    color: materialColors.blackPrimary,
+    textAlign: "center",
+    padding: 15,
+  },
+  text1: {
+    ...human.title1,
+    ...systemWeights.semibold,
+    color: materialColors.blackPrimary,
     textAlign: "center",
     padding: 15,
   },

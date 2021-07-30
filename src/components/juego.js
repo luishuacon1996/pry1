@@ -3,6 +3,8 @@ import { View, Text } from "react-native";
 import Color4 from "./color4";
 import Color5 from "./color5";
 import Color6 from "./color6";
+import Figuras4 from "./figurasGeometricas4";
+import Figuras5 from "./figurasGeometricas5";
 
 import { MyContext } from "../context";
 
@@ -14,6 +16,10 @@ const Juego = () => {
     return <Color5 />;
   } else if (context.state.Juego == 63) {
     return <Color6 />;
+  } else if (context.state.Juego == 44) {
+    return <Figuras4 />;
+  } else if (context.state.Juego == 54) {
+    return <Figuras5 />;
   } else {
     return (
       <View>

@@ -74,7 +74,7 @@ export const DATA = [
     edad: 5,
     title: "Figuras Geométricas",
     idCategoria: 4,
-    image: require("../assets/images/geometrical-shapes (1).png"),
+    image: require("../assets/images/figuras.png"),
   },
   {
     key: "64",
@@ -130,6 +130,6 @@ export const DatosCategoria = [
   {
     key: "5",
     title: "Nociones de cantidad",
-    image: require("../assets/images/coins.png"),
+    image: require("../assets/images/box.png"),
   },
 ];
