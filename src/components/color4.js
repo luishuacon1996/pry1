@@ -49,11 +49,7 @@ const Color4 = () => {
   function userClick(color) {
     let colorsS = ["green", "purple", "orange"];
     if (color === currentColor) {
-      Toast.show({
-        type: "success",
-        text1: "🙂🙂🙂🙂🙂🙂",
-        position: "bottom",
-      });
+      alert("", "🙂");
       let num = Math.floor(Math.random() * 2);
       console.log(`current color antes ${currentColor}`);
       console.log(`current color después ${currentColor}`);
@@ -82,11 +78,7 @@ const Color4 = () => {
         setColorY(colorsS[Math.floor(Math.random() * 3)]);
       }
     } else {
-      Toast.show({
-        type: "error",
-        text1: "😥😥😥😥😥😥",
-        position: "bottom",
-      });
+      alert("", "😟");
     }
   }
 

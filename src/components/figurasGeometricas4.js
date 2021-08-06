@@ -44,12 +44,8 @@ const Figuras4 = () => {
 
   function userClick(figura) {
     if (figura === currentFigure) {
-      Toast.show({
-        type: "success",
-        text1: "🙂🙂🙂🙂🙂🙂",
-        delay: 100,
-        position: "bottom",
-      });
+      alert("", "🙂");
+
       let num = Math.floor(Math.random() * 4);
 
       let urlAux = tracks[num].url;
@@ -59,11 +55,7 @@ const Figuras4 = () => {
       console.log(figureAux);
       setDisabledBtn(true);
     } else {
-      Toast.show({
-        type: "error",
-        text1: "🙁🙁🙁🙁🙁🙁",
-        position: "bottom",
-      });
+      alert("", "🙁");
     }
   }
 
@@ -174,7 +166,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#12cfcf",
   },
   button: {
-    backgroundColor: "#859a9b",
+    backgroundColor: "#ba67c7",
     borderRadius: 20,
     padding: 5,
     marginBottom: 10,

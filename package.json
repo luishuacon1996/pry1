@@ -27,6 +27,7 @@
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.4.0",
+    "react-native-super-alert": "^0.1.0",
     "react-native-toast-message": "^1.4.9",
     "react-native-typography": "^1.4.1",
     "react-native-unimodules": "~0.14.2",

@@ -51,11 +51,7 @@ const Color5 = () => {
   function userClick(color) {
     if (counter > 0) {
       if (color === currentColor) {
-        Toast.show({
-          type: "success",
-          text1: "😀😀😀😀😀😀",
-          position: "bottom",
-        });
+        alert("", "🙂");
 
         let num = Math.floor(Math.random() * 3);
         let colorAux = tracks[num].title;
@@ -65,12 +61,7 @@ const Color5 = () => {
         setCurrentColor(color1);
         setColorEsp(colorAux);
       } else {
-        Toast.show({
-          type: "error",
-          text1: "😟😟😟😟😟😟",
-          //text1: "escogiste el color incorrecto, intenta otra vez",
-          position: "bottom",
-        });
+        alert("", "😟");
       }
     }
   }

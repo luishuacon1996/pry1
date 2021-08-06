@@ -49,12 +49,8 @@ const Figuras5 = () => {
 
   function userClick(figura) {
     if (figura === currentFigure) {
-      Toast.show({
-        type: "success",
-        text1: "🙂🙂🙂🙂🙂🙂",
-        delay: 100,
-        position: "bottom",
-      });
+      alert("", "🙂");
+
       let num = Math.floor(Math.random() * 5);
       console.log(num);
 
@@ -65,11 +61,7 @@ const Figuras5 = () => {
       console.log(figureAux);
       setDisabledBtn(true);
     } else {
-      Toast.show({
-        type: "error",
-        text1: "😥😥😥😥😥😥",
-        position: "bottom",
-      });
+      alert("", "🙁");
     }
   }
 
@@ -195,7 +187,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   button: {
-    backgroundColor: "#859a9b",
+    backgroundColor: "#ba67c7",
     borderRadius: 20,
     padding: 5,
     marginBottom: 10,
